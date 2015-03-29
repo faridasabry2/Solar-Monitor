@@ -1,45 +1,48 @@
+// This #include statement was automatically added by the Spark IDE.
+//#include "SparkTime/SparkTime.h"
+
+
+//Pin connected to solar panel    
+int pinSolar = A0; 
+//pin monitoring power out
+int pinCharging = A1;
+
+float resistanceSolar = 100.0;
+float resistanceCharging = 100.0;
+float sumSolar = 0.0;
+float sumCharging = 0.0;
+int minutesNow = 0;
+int minute = 60000;
+
+
+
 void setup() {
-    //Pin connected to solar panel    
-    int pinSolar = D0; 
-    //pin monitoring power out
-    int pinCharging = D1;
-    
-    int resistanceSolar = 100;
-    int resistanceCharging = 100;
-    int sumSolar = 0;
-    int sumCharging = 0;
-    int days = 0;
-    int minute = 60000;
-    int minuteCount = 0;
-    bool flagloop = false;
-    //flags
-    pinMode(voltagePin, INPUT);
+  
+    pinMode( pinSolar, INPUT );
+    pinMode( pinCharging, INPUT );
 
 }
 
 void loop() {
-    int TimeBegining = millis(); //gets current time in milliseconds
+    
+    float voltageSolar = analogRead(pinSolar ); //solar power now in volts
+    float solarNow = ( voltageSolar * voltageSolar ) / resistanceSolar; //solar power now in watts
+    
+    float voltageCharging = analogRead( pinCharging ); //charging power now in volts
+    float chargingNow = ( voltageCharging * voltageCharging ) / resistanceCharging; //solar power now in watts
+    
+    sumSolar +=  solarNow;
+    sumCharging  += chargingNow;
+    
+    delay( minute );
+    minutesNow += minute;
+    
+    if (minutesNow == 24 * minutes) {
         
-    float solarNow = analogueRead( pinSolar ); //solar power in watts now
-    float chargingNow = analogueRead( pinCharging ); //charging power in watts now
-    float sumSolar = sumSolar +solarNow
-    time = delay(1min - time)
-    int TimeEnd = millis();
-    if (flagloop != true) {
-        changeTime = TimeEnd - TimeBegining;
-    }
-    else {
-        changeTime = changeTime;
+        
     }
     
-    minuteCount = minuteCount + 1;
-        
-    if (minutes == 1440) {
-        days = days + 1
-    }
-           
-    flagloop = true;
-    delay( minute-changeTime );
+    
     
     
         //write this to cloud 
