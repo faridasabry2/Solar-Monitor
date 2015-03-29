@@ -1,8 +1,5 @@
-// This #include statement was automatically added by the Spark IDE.
-//#include "SparkTime/SparkTime.h"
+   
 
-
-//Pin connected to solar panel    
 int pinSolar = A0; 
 //pin monitoring power out
 int pinCharging = A1;
@@ -22,23 +19,36 @@ void setup() {
     pinMode( pinCharging, INPUT );
 
 }
+int use[100] = {0}, generated[100] = {0}, i=0, j = 0;
 
 void loop() {
     
-    float voltageSolar = analogRead(pinSolar ); //solar power now in volts
+    float voltageSolar = analogRead( pinSolar ); //solar power now in volts
     float solarNow = ( voltageSolar * voltageSolar ) / resistanceSolar; //solar power now in watts
     
     float voltageCharging = analogRead( pinCharging ); //charging power now in volts
     float chargingNow = ( voltageCharging * voltageCharging ) / resistanceCharging; //solar power now in watts
+    
+    use[i] = solarNow;
+    generated[j] = chargingNow;
+    
     
     sumSolar +=  solarNow;
     sumCharging  += chargingNow;
     
     delay( minute );
     minutesNow += minute;
+    i++;
+    j++;
     
-    if (minutesNow == 24 * minutes) {
-        
+    
+    
+    if (minutesNow == 60* minutes) {
+        for (x = 0, x < 100, x++) {
+            float totalUse += use[x];
+            float totalGenerated += generated[x];
+        }
+        minutesNow = 0;
         
     }
     
