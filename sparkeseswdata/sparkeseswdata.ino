@@ -9,8 +9,8 @@ void setup() {
     int sumSolar = 0;
     int sumCharging = 0;
     int days = 0;
-    int min = 60000;
-    int minutes = 0;
+    int minute = 60000;
+    int minuteCount = 0;
     bool flagloop = false;
     //flags
     pinMode(voltagePin, INPUT);
@@ -32,14 +32,14 @@ void loop() {
         changeTime = changeTime;
     }
     
-    minutes = minutes + 1;
+    minuteCount = minuteCount + 1;
         
     if (minutes == 1440) {
         days = days + 1
     }
            
     flagloop = true;
-    delay( min-changeTime );
+    delay( minute-changeTime );
     
     
         //write this to cloud 
