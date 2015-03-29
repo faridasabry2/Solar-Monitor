@@ -1,5 +1,3 @@
-   
-
 int pinSolar = A0; 
 //pin monitoring power out
 int pinCharging = A1;
@@ -37,14 +35,15 @@ void loop() {
     sumCharging  += chargingNow;
     
     delay( minute );
-    minutesNow += minute;
+    minutesNow += 1;
     i++;
     j++;
     
     
     
-    if (minutesNow == 60* minutes) {
-        for (x = 0, x < 100, x++) {
+    int x;
+    if (minutesNow == 60* minute) {
+        for (x = 0; x < 100; x++) {
             float totalUse += use[x];
             float totalGenerated += generated[x];
         }
@@ -53,12 +52,4 @@ void loop() {
     }
     
     
-    
-    
-        //write this to cloud 
-    
-    }
-    
-    //look at pin solar, write to file 
-
 }
