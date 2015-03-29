@@ -68,21 +68,19 @@ void loop() {
     Serial.println();
     Serial.println("Application>\tStart of Loop.");
     // Request path and body can be set at runtime or at setup.
-    request.hostname = "localhost";
-    request.port = 5000;
-    request.path = "/to-app";
-    
     request.hostname = "cryptic-brook-4182.herokuapp.com";
     request.port = 80;
     request.path = "/from-corey";
     
+    request.hostname = "cryptic--brook--4182-herokuapp-com-jepr9wbaiu7b.runscope.net";
+    request.port = 80;
+    request.path = "/from-corey";
     request.body = "solarNow=" + String(solarNow) + "&chargingNow=" + String(chargingNow);
 
     // The library also supports sending a body with your request:
     //request.body = "{\"key\":\"value\"}";
 
-    // Get request
-    http.get(request, response, headers);
+    http.post(request, response, headers);
     Serial.print("Application>\tResponse status: ");
     Serial.println(response.status);
 
@@ -94,4 +92,5 @@ void loop() {
     
     
 }
+
 
