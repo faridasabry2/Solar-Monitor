@@ -17,8 +17,8 @@ int pinSolar = A0;
 //pin monitoring power out
 int pinCharging = A1;
 
-float resistanceSolar = 100.0;
-float resistanceCharging = 100.0;
+float resistanceSolar = 330.0;
+float resistanceCharging = 330.0;
 float sumSolar = 0.0;
 float sumCharging = 0.0;
 int minute = 60000;
@@ -36,11 +36,12 @@ int use[100] = {0}, generated[100] = {0}, i=0, j = 0;
 
 void loop() {
 
-    
-    float voltageSolar = analogRead( pinSolar ); //solar power now in volts
+    float sensor1Read = analogRead( pinSolar );
+    float voltageSolar = (5.0 / 1023.0)* sensor1Read; //solar power now in volts
     float solarNow = ( voltageSolar * voltageSolar ) / resistanceSolar; //solar power now in watts
     
-    float voltageCharging = analogRead( pinCharging ); //charging power now in volts
+    float sensor2Read = analogRead( pinCharging );
+    float voltageCharging = (5.0 / 1023.0) * sensor2Read; //charging power now in volts
     float chargingNow = ( voltageCharging * voltageCharging ) / resistanceCharging; //solar power now in watts
     
     use[i] = solarNow;
@@ -71,9 +72,9 @@ void loop() {
     request.port = 5000;
     request.path = "/to-app";
     
-    request.hostname = "requestb.in";
+    request.hostname = "cryptic-brook-4182.herokuapp.com";
     request.port = 80;
-    request.path = "/pvnn45pv";
+    request.path = "/from-corey";
     
     request.body = "solarNow=" + String(solarNow) + "&chargingNow=" + String(chargingNow);
 
