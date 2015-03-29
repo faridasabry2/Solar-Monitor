@@ -1,15 +1,13 @@
 // This #include statement was automatically added by the Spark IDE.
 #include "HttpClient/HttpClient.h"
-
 HttpClient http;
-#define VARIABLE_ID "string"
-#define TOKEN "otherString"
 
-//Headers need to be set to init
+// Headers currently need to be set at init, useful for API keys etc.
 http_header_t headers[] = {
-    {"Content-Type", "application/json" },
-    {"X-Auth-Token", TOKEN },
-    { NULL, NULL }
+    //  { "Content-Type", "application/json" },
+    //  { "Accept" , "application/json" },
+    { "Accept" , "*/*"},
+    { NULL, NULL } // NOTE: Always terminate headers will NULL
 };
 
 http_request_t request;
@@ -23,24 +21,21 @@ float resistanceSolar = 100.0;
 float resistanceCharging = 100.0;
 float sumSolar = 0.0;
 float sumCharging = 0.0;
-int minutesNow = 0;
 int minute = 60000;
 
 
 
 void setup() {
+    Serial.begin(9600);
   
     pinMode( pinSolar, INPUT );
     pinMode( pinCharging, INPUT );
-    
-    request.hostname = "ourUrl"; //our server url
-    request.port = 80; 
-    //Serial.begin(9600);
 
 }
 int use[100] = {0}, generated[100] = {0}, i=0, j = 0;
 
 void loop() {
+
     
     float voltageSolar = analogRead( pinSolar ); //solar power now in volts
     float solarNow = ( voltageSolar * voltageSolar ) / resistanceSolar; //solar power now in watts
@@ -56,38 +51,43 @@ void loop() {
     sumCharging  += chargingNow;
     
     delay( minute );
-    minutesNow += 1;
     i++;
     j++;
     
     
     
-    int x;
-    if (minutesNow == 60* minute) {
-        for (x = 0; x < 100; x++) {
-            float totalUse += use[x];
-            float totalGenerated += generated[x];
-        }
-        minutesNow = 0;
+  
         
-    }
+
    
-    char [][] myArray = {
-        {"solarNow", String(solarNow) }, 
-        {"chargingNow", String(chargingNow) }, 
-        {"totalUse", String(totalUse)}, 
-        {"totalGenerated", String(totalUse}
-    };
+   // char dataArray[]= {solarNow, chargingNow, totalUse, totalGenerated
+    //};
     
-    //Transmitting Data:
-    request.path = "/api/v1.6/variables/"VARIABLE_ID"/values";
-    request.body = "{\"value\":" + String(myArray) + "}";
+    
+    Serial.println();
+    Serial.println("Application>\tStart of Loop.");
+    // Request path and body can be set at runtime or at setup.
+    request.hostname = "localhost";
+    request.port = 5000;
+    request.path = "/to-app";
+    
+    request.hostname = "requestb.in";
+    request.port = 80;
+    request.path = "/pvnn45pv";
+    
+    request.body = "solarNow=" + String(solarNow) + "&chargingNow=" + String(chargingNow);
 
-    http.post(request, response, headers);
+    // The library also supports sending a body with your request:
+    //request.body = "{\"key\":\"value\"}";
 
-    //Serial.println(response.status);
+    // Get request
+    http.get(request, response, headers);
+    Serial.print("Application>\tResponse status: ");
+    Serial.println(response.status);
 
-    //Serial.println(response.body);
+    Serial.print("Application>\tHTTP Response Body: ");
+    Serial.println(response.body);
+
 
     //delay(1000);
     
