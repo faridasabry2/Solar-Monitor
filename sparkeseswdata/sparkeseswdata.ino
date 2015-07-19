@@ -55,11 +55,6 @@ void loop() {
     i++;
     j++;
     
-    
-    
-  
-        
-
    
    // char dataArray[]= {solarNow, chargingNow, totalUse, totalGenerated
     //};
